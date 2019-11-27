@@ -61,5 +61,10 @@ class Dqn():
         self.last_action =  0
         self.last_reword = 0
 
+    def select_action(self, state):
+        probs = F.softmax(self.model(Variable(state, volantile = True))*7) #t=7
+        # softmax([1,2,3]) = [0.04, 0.11, 0.85] => softmax([1,2,3]*3) = [0, 0.02, 0.98]
+        action = probs.multinomial()
+        return action.data[0,0]
 
 
