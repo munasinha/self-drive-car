@@ -67,4 +67,11 @@ class Dqn():
         action = probs.multinomial()
         return action.data[0,0]
 
-
+    def learn(self, batch_state, batch_next_state, batch_reword, batch_action):
+        output = self.model(batch_state).gather(1, batch_action.unsqueeze(1)).squeeze(1)
+        next_output = self.model(batch_next_state).detach().max(1)[0]
+        target = self.gamma*next_output + batch_reword
+        td_loss = F.smooth_l1_loss(output, target) #temperal deffents
+        self.optimizer.zero_grad()
+        td_loss.backward(retain_variables = True)
+        self.optimizer.step() #update the we
