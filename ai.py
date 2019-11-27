@@ -29,3 +29,8 @@ class Netwotk(nn.Module):
         q_values = self.fc2(x)      # output neurons for the q-value
         return q_values
 
+# Implimenting Experiance Replay
+
+class ReplayMemory(object):
+
+
