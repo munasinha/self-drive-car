@@ -47,7 +47,19 @@ class ReplayMemory(object):
         samples = zip(*random.sample(self.memory , batch_size))
         return map(lambda x: Variable(torch.cat(x,0)),samples)
 
+# Impliment deep Q learning
 
+class Dqn():
+
+    def __init__(self, input_size, nb_action, gamma):
+        self.gamma = gamma
+        self.reward_window = []
+        self.model = Netwotk(input_size, nb_action)
+        self.memory = ReplayMemory(100000)
+        self.optimizer = optim.Adam(self.model.parameters(), lr = 0.001)
+        self.last_state = torch.Tensor(input_size).unsqueeze(0) #creating a tenser with a fake dimention / alrady have 5 dimentions => 3 signal + oriantation and -oriantation
+        self.last_action =  0
+        self.last_reword = 0
 
 
 
